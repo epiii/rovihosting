@@ -1,0 +1,28 @@
+#php_flag display_errors off
+
+RewriteEngine On
+
+RewriteRule   ^daftar/?$   				daftar.php 
+
+#halaman user
+RewriteRule   ^user/main/?$   			user/index.php?menu=vmain 
+RewriteRule   ^user/profil/?$   		user/index.php?menu=vprof 
+RewriteRule   ^user/kegiatan/?$   		user/index.php?menu=vkeg 
+RewriteRule   ^user/rekapitulasi/?$ 	user/index.php?menu=vrekap
+#RewriteRule   ^user/cetak/?$ 			user/index.php?menu=rcetak
+
+#halaman admin
+RewriteRule   ^admin/beranda/?$ 		admin/index.php?menu=vmain 
+RewriteRule   ^admin/pengurus/?$ 		admin/index.php?menu=vadmin 
+RewriteRule   ^admin/aturan/?$ 			admin/index.php?menu=vrule 
+RewriteRule   ^admin/daftar-dosen/?$ 	admin/index.php?menu=vduk 
+RewriteRule   ^admin/angka-kredit/?$ 	admin/index.php?menu=vak 
+RewriteRule   ^admin/kegiatan/?$ 		admin/index.php?menu=vkeg 
+RewriteRule   ^admin/informasi/?$ 		admin/index.php?menu=vnews 
+RewriteRule   ^admin/golongan/?$ 		admin/index.php?menu=vgol 
+RewriteRule   ^admin/jabatan/?$ 		admin/index.php?menu=vjab 
+RewriteRule   ^admin/keluar/?$ 			admin/index.php?menu=logout 
+
+
+# Send all blocked request to homepage with 403 Forbidden error!
+#RewriteRule ^(.*)$ index.php [F,L]
