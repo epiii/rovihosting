@@ -1,3 +1,4 @@
+//tes
 var pros = 'p_daftar.php';
 function comboFak(fak){
 	//console.log(fak);return false;
