@@ -5,6 +5,8 @@
         var $total;
 
         function Pagination_class($mnu,$qry,$starting,$recpage){
+
+            global $con;
             $rst        =   mysqli_query($con,$qry) or die(mysqli_error($con));
             $numrows    =   mysqli_num_rows($rst);
             $qry        .= " limit $starting, $recpage";
@@ -86,4 +88,3 @@
             $this->total ='Halaman ke: <b>'.$page_showing.'</b> dari <b>'.$total_page.'</b> (Total Data: <b>'.$numrows.'</b>)';
         }
     }
-?>
