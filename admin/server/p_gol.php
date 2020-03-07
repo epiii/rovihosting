@@ -14,10 +14,10 @@
 	switch ($aksi){
 		#urutan =============================================================================================
 		case 'urutan':
-			$plh1 = mysql_fetch_assoc(mysql_query("select id_gol from gol where urutan = '$_GET[awal]'"));
-			$plh2 = mysql_fetch_assoc(mysql_query("select id_gol from gol where urutan = '$_GET[akhir]'"));
-			$exe1 = mysql_query("update gol set urutan = '$_GET[akhir]' where id_gol='$plh1[id_gol]'");
-			$exe2 = mysql_query("update gol set urutan = '$_GET[awal]' where id_gol='$plh2[id_gol]'");
+			$plh1 = mysqli_fetch_assoc(mysqli_query($con,"select id_gol from gol where urutan = '$_GET[awal]'"));
+			$plh2 = mysqli_fetch_assoc(mysqli_query($con,"select id_gol from gol where urutan = '$_GET[akhir]'"));
+			$exe1 = mysqli_query($con,"update gol set urutan = '$_GET[akhir]' where id_gol='$plh1[id_gol]'");
+			$exe2 = mysqli_query($con,"update gol set urutan = '$_GET[awal]' where id_gol='$plh2[id_gol]'");
 			if($exe1 && $exe2){
 				echo '{"status":"sukses"}';
 			}else{
@@ -35,9 +35,9 @@
 					#}else{
 						$sql	= "select * from jab";
 					#}
-					$exe	= mysql_query($sql);
+					$exe	= mysqli_query($con,$sql);
 					$datax	= array();
-					while($res=mysql_fetch_assoc($exe)){
+					while($res=mysqli_fetch_assoc($exe)){
 						$datax[]=$res;
 					}
 					
@@ -59,9 +59,9 @@
 					 	g.id_gol = '$_GET[id_gol]'
 					 ";
 			// var_dump($sql);exit();
-			$exe	= mysql_query($sql);
+			$exe	= mysqli_query($con,$sql);
 			#var_dump($exe);exit();
-			$res	= mysql_fetch_assoc($exe);
+			$res	= mysqli_fetch_assoc($exe);
 			if($exe){
 				echo '{
 					"jabatan":"'.$res['jab'].'",
@@ -80,11 +80,11 @@
 		
 		#ubah  ==============================================================================================
 		case 'ubah':
-			$sql = "update gol set 	id_jab	= '".mysql_real_escape_string($_POST['id_jabTB'])."',
-									gol 	= '".mysql_real_escape_string($_POST['golTB'])."'
+			$sql = "update gol set 	id_jab	= '".mysqli_real_escape_string($con,$_POST['id_jabTB'])."',
+									gol 	= '".mysqli_real_escape_string($con,$_POST['golTB'])."'
 								where id_gol=".$_GET['id_gol'];
 		//var_dump($sql);exit();
-			$exe	= mysql_query($sql);
+			$exe	= mysqli_query($con,$sql);
 			if($exe){
 				echo '{"status":"sukses"}';
 			}else{
@@ -94,12 +94,12 @@
 		break;
 		#tambah  ==============================================================================================
 		case 'tambah':
-			$urutan	= mysql_fetch_assoc(mysql_query("select (max(urutan)+1 ) as urut from gol"));
-			$sql = "insert into gol  set	id_jab	= '".mysql_real_escape_string($_POST['id_jabTB'])."',
-											gol		= '".mysql_real_escape_string($_POST['golTB'])."',
+			$urutan	= mysqli_fetch_assoc(mysqli_query($con,"select (max(urutan)+1 ) as urut from gol"));
+			$sql = "insert into gol  set	id_jab	= '".mysqli_real_escape_string($con,$_POST['id_jabTB'])."',
+											gol		= '".mysqli_real_escape_string($con,$_POST['golTB'])."',
 											urutan	= '$urutan[urut]'";
 			#var_dump($sql);exit();
-			$exe	= mysql_query($sql);
+			$exe	= mysqli_query($con,$sql);
 			if($exe){
 				echo '{"status":"sukses"}';
 			}else{
@@ -111,7 +111,7 @@
 		case 'hapus':
 			$sql	= 'DELETE from gol where id_gol ='.$_GET['id_gol'];
 			// var_dump($sql);exit();
-			$exe	= mysql_query($sql);
+			$exe	= mysqli_query($con,$sql);
 			
 			if($exe){
 				echo '{"status":"sukses"}';
@@ -131,7 +131,7 @@
 					WHERE
 						j.id_jab = g.id_jab
 					ORDER BY g.urutan ASC";
-			$jumTot = mysql_num_rows(mysql_query($sql));
+			$jumTot = mysqli_num_rows(mysqli_query($con,$sql));
 			#var_dump($jumTot);exit();
 			if(isset($_GET['starting'])){ //nilai awal halaman
 				$starting=$_GET['starting'];
@@ -149,10 +149,10 @@
 			#end of paging	 
 			
 			#ada data
-			$jum	= mysql_num_rows($result);
+			$jum	= mysqli_num_rows($result);
 			if($jum!=0){	
 				$x	= $starting+1;
-				while($res = mysql_fetch_array($result)){	
+				while($res = mysqli_fetch_array($result)){	
 					$nox='<select name="noTB" id="noTB_'.$x.'" class="span2" onchange="ubahUrutan('.$res['urutan'].','.$x.');">';
 					#var_dump($nox);exit();
 					for($i=1;$i<=$jumTot;$i++){

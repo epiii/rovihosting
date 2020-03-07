@@ -2,7 +2,7 @@
 	session_start();
 	if($_SESSION['levelx']=='adminf' or $_SESSION['levelx']=='adminu' ){
 		include "../lib/koneksi.php";
-		$res = mysql_fetch_assoc(mysql_query('SELECT * FROM admin join fak on fak.idfak = admin.idfak WHERE admin.iduser='.$_SESSION['iduser']));
+		$res = mysqli_fetch_assoc(mysqli_query($con,'SELECT * FROM admin join fak on fak.idfak = admin.idfak WHERE admin.iduser='.$_SESSION['iduser']));
 		$_SESSION['idadmin']=$res['idadmin'];
 		$_SESSION['fak']=$res['fak'];
 	?>

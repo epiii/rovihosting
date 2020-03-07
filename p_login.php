@@ -3,9 +3,9 @@
 	if(!isset($_POST['username']) or !isset($_POST['password'])){
 		echo '<script>window.location=\'./\'</script>';
 	}else{
-		require_once'lib/koneksi.php';
+		require_once 'lib/koneksi.php';
 		function anti_injection($data){
-			$filter = mysql_real_escape_string(stripslashes(strip_tags(htmlspecialchars($data,ENT_QUOTES))));
+			$filter = mysqli_real_escape_string($con,stripslashes(strip_tags(htmlspecialchars($data,ENT_QUOTES))));
 			return $filter;
 		}
 
@@ -13,13 +13,13 @@
 		$pass     = anti_injection(md5($_POST['password']));
 
 		$sql = "SELECT * FROM user WHERE username='$username' AND password='$pass' ";
-		$login	= mysql_query($sql);
-		$ketemu	= mysql_num_rows($login);
-		$r		= mysql_fetch_array($login);
+		$login	= mysqli_query($con,$sql);
+		$ketemu	= mysqli_num_rows($login);
+		$r		= mysqli_fetch_array($login);
 
 		$sql2 = "SELECT * FROM dsn WHERE iduser='$r[iduser]'";
-		$exe2 = mysql_query($sql2);
-		$r2   = mysql_fetch_array($exe2);
+		$exe2 = mysqli_query($con,$sql2);
+		$r2   = mysqli_fetch_array($exe2);
 		
 		// Apabila username dan password ditemukan
 		if ($ketemu > 0){
@@ -47,5 +47,3 @@
 			echo "<script>alert('username / password salah ');window.location='./';</script>";
 		}
 	}#end  of : cek username/password 
-
-?>

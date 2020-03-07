@@ -5,10 +5,10 @@
         var $total;
 
         function Pagination_class($mnu,$qry,$starting,$recpage){
-            $rst        =   mysql_query($qry) or die(mysql_error());
-            $numrows    =   mysql_num_rows($rst);
+            $rst        =   mysqli_query($con,$qry) or die(mysqli_error($con));
+            $numrows    =   mysqli_num_rows($rst);
             $qry        .= " limit $starting, $recpage";
-            $this->result=   mysql_query($qry) or die(mysql_error());
+            $this->result=   mysqli_query($con,$qry) or die(mysqli_error($con));
             $next       =   $starting+$recpage;
             $var        =   ((intval($numrows/$recpage))-1)*$recpage;
             $page_showing=   intval($starting/$recpage)+1;

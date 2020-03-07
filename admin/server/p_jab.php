@@ -17,9 +17,9 @@
 			switch($menu){
 				case 'jab':
 					$sql	= 'SELECT * from  gol where id_jab = '.$_GET['id_jab'];
-					$exe	= mysql_query($sql);
+					$exe	= mysqli_query($con,$sql);
 					$datax	= array();
-					while($res=mysql_fetch_assoc($exe)){
+					while($res=mysqli_fetch_assoc($exe)){
 						$datax[]=$res;
 					}
 					var_dump($datax);exit();
@@ -35,8 +35,8 @@
 		#ambiledit==============================================================================================
 		case 'ambiledit':
 			$sql = 'SELECT * from jab where id_jab = '.$_GET['id_jab'];
-			$exe = mysql_query($sql);
-			$res = mysql_fetch_assoc($exe);
+			$exe = mysqli_query($con,$sql);
+			$res = mysqli_fetch_assoc($exe);
 			if($exe){
 				echo '{
 					"jab":"'.$res['jab'].'"
@@ -48,10 +48,10 @@
 		
 		#ubah  ==============================================================================================
 		case 'ubah':
-			$sql = "update  jab set jab = '".mysql_real_escape_string($_POST['jabTB'])."'
+			$sql = "update  jab set jab = '".mysqli_real_escape_string($con,$_POST['jabTB'])."'
 					where id_jab=".$_GET['id_jab'];
 			#var_dump($sql);exit();
-			$exe	= mysql_query($sql);
+			$exe	= mysqli_query($con,$sql);
 			if($exe){
 				echo '{"status":"sukses"}';
 			}else{
@@ -61,9 +61,9 @@
 		break;
 		#tambah  ==============================================================================================
 		case 'tambah':
-			$sql = "INSERT into jab set	jab	= '".trim(mysql_real_escape_string($_POST['jabTB']))."'";
+			$sql = "INSERT into jab set	jab	= '".trim(mysqli_real_escape_string($con,$_POST['jabTB']))."'";
 			// var_dump($sql);exit();	
-			$exe	= mysql_query($sql);
+			$exe	= mysqli_query($con,$sql);
 			if($exe){
 				echo '{"status":"sukses"}';
 			}else{
@@ -74,7 +74,7 @@
 		#hapus ==============================================================================================
 		case 'hapus':
 			$sql	= "delete from jab where id_jab ='$_GET[id_jab]'";
-			$exe	= mysql_query($sql);
+			$exe	= mysqli_query($con,$sql);
 			
 			if($exe){
 				echo '{"status":"sukses"}';
@@ -103,10 +103,10 @@
 			#end of paging	 
 			
 			#ada data
-			if(mysql_num_rows($result)!=0)
+			if(mysqli_num_rows($result)!=0)
 			{
 				$nox 	= $starting+1;
-				while($res = mysql_fetch_array($result)){	
+				while($res = mysqli_fetch_array($result)){	
 					$btn ="	 <td>
 								 <a class='btn' href=\"javascript:editJab('$res[id_jab]');\" 
 								 role='button'><i class='icon-pencil'></i></a>

@@ -87,13 +87,13 @@
 								ORDER BY 
 									dk.tglinput desc
 							)tbpoinC';
-		$exekeg 	= mysql_query($sqlkeg);
+		$exekeg 	= mysqli_query($con,$sqlkeg);
 		$subNumDt	= 0;
 		$kegArr = array();
 
 		#loop kegiatan (db) -------------------
 		$subSisa2 = 0;
-		while ($reskeg=mysql_fetch_assoc($exekeg)){
+		while ($reskeg=mysqli_fetch_assoc($exekeg)){
 			$sisa 	= $reskeg['sisa'];
 			$iddtk 	= $reskeg['iddtk'];
 			$target	= $target-$sisa;
@@ -101,7 +101,7 @@
 			if($sisa!=0){ //punya sisa poin @kegiatan
 				if($target>0){ // target > sisa (habis terpakai @dtk)
 					$sql = 'UPDATE dtk set sisa=0 WHERE iddtk='.$iddtk;
-					$exe = mysql_query($sql);
+					$exe = mysqli_query($con,$sql);
 					if($exe){
 						$state = 'false';
 						continue;
@@ -113,7 +113,7 @@
 						$sql = 'UPDATE dtk set sisa='.abs($target).' WHERE iddtk='.$iddtk;
 					}
 
-					$exe = mysql_query($sql);
+					$exe = mysqli_query($con,$sql);
 					$state='true'; // exit from loop & skip perhitungan poin reguler => result
 					break;
 				}
@@ -138,17 +138,17 @@
 		        if ( $tmp < $target) { //akumulasi  kurang 
 		            $counter += $poin;
 					$sql="UPDATE dtk set status='done' where iddtk=".$value['iddtk'];
-					mysql_query($sql);
+					mysqli_query($con,$sql);
 					continue;
 		        }elseif($tmp==$target){ //akumulasi pas
 		            // $counter += $poin;
 					$sql="UPDATE dtk set status='done' where iddtk=".$value['iddtk'];
-					mysql_query($sql);
+					mysqli_query($con,$sql);
 					$state='true';	
 		            break;
 		        }else{ //akumulasi lebih 
 		    		$sql="UPDATE dtk set status='done',sisa=".abs($tmp-$target)." where iddtk=".$value['iddtk'];
-					mysql_query($sql);
+					mysqli_query($con,$sql);
 					$state='true';
 					break;
 		        }

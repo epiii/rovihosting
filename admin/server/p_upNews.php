@@ -18,9 +18,9 @@
 		//add
 		else{
 			$sql 	= 'select max(idnews)as idnew from news';
-			$exe 	= mysql_query($sql)or die('eror sql cek id terakhir');
-			$res 	= mysql_fetch_assoc($exe);
-			$jumx 	= mysql_num_rows($exe);
+			$exe 	= mysqli_query($con,$sql)or die('eror sql cek id terakhir');
+			$res 	= mysqli_fetch_assoc($exe);
+			$jumx 	= mysqli_num_rows($exe);
 			if($jumx=0){ // baru
 				$idunik==1;
 			}else{ 		// data lanjutan
@@ -77,20 +77,20 @@
 			if(isset($_POST['fileadd']) and !empty($_POST['fileadd']))
 			{
 				$sqlf 	= "select file from news where idnews = '".$_POST['idformTB']."'";
-				$exef	= mysql_query($sqlf);
-				$resf	= mysql_fetch_assoc($exef);
+				$exef	= mysqli_query($con,$sqlf);
+				$resf	= mysqli_fetch_assoc($exef);
 				$nama	= $resf['file'];
 				$linkf	= $upDir.$nama;
 				
 				#hapus file lama
 				if(unlink($linkf)){
-					$sqlf	= "update news set	tittle		= '".trim(mysql_real_escape_string($_POST['tittleTB']))."',
-												deskripsi	= '".trim(mysql_real_escape_string($_POST['deskripsiTB']))."',
+					$sqlf	= "update news set	tittle		= '".trim(mysqli_real_escape_string($con,$_POST['tittleTB']))."',
+												deskripsi	= '".trim(mysqli_real_escape_string($con,$_POST['deskripsiTB']))."',
 												kategori	= '$_POST[kategoriTB]',
 												file		= '".$_POST['fileadd'][0]."',
 												tglupdate	= NOW()
 								where idnews = '$_POST[idformTB]'";
-					$exef	= mysql_query($sqlf);
+					$exef	= mysqli_query($con,$sqlf);
 					#berhasil simpan
 					if($exef){
 						$data	= array(
@@ -110,12 +110,12 @@
 			
 			# tidak ada file 
 			else{ 
-				$sqlf	= "update news set	tittle		= '".trim(mysql_real_escape_string($_POST['tittleTB']))."',
-											deskripsi	= '".trim(mysql_real_escape_string($_POST['deskripsiTB']))."',
+				$sqlf	= "update news set	tittle		= '".trim(mysqli_real_escape_string($con,$_POST['tittleTB']))."',
+											deskripsi	= '".trim(mysqli_real_escape_string($con,$_POST['deskripsiTB']))."',
 											kategori	= '$_POST[kategoriTB]',
 											tglupdate	= NOW()
 									where idnews = '$_POST[idformTB]'";
-				$exef	= mysql_query($sqlf);
+				$exef	= mysqli_query($con,$sqlf);
 				#berhasil simpan data
 				if($exef){
 					$data	= array(
@@ -145,7 +145,7 @@
 												tglupdate	= NOW(),
 												file 		= '".$_POST['fileadd'][$i]."'";
 				//var_dump($sql);exit();
-				$exe	= mysql_query($sql);
+				$exe	= mysqli_query($con,$sql);
 				if($exe){
 					$data	= array(
 						'success'=>'berhasil_new_data',

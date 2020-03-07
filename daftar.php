@@ -200,8 +200,8 @@
 								<option value="">silahkan pilih fakultas</option>
 							<?php
 								$sql="select * from fak order by fak asc";
-								$exe=mysql_query($sql);
-								while($res=mysql_fetch_assoc($exe)){
+								$exe=mysqli_query($con,$sql);
+								while($res=mysqli_fetch_assoc($exe)){
 									echo '<option value="'.$res['idfak'].'">'.$res['fak'].'</option>';
 								}
 
@@ -232,8 +232,8 @@
 								<option value="">pilih pend tertinggi ..</option>
 								<?php
 									$sqlpt 	= 'select * from pt  order by id_pt asc';
-									$exept 	= mysql_query($sqlpt);
-									while($respt=mysql_fetch_assoc($exept)){
+									$exept 	= mysqli_query($con,$sqlpt);
+									while($respt=mysqli_fetch_assoc($exept)){
 										echo '<option value="'.$respt[id_pt].'">'.$respt[pt].'</option>';
 									}
 								?>
@@ -247,8 +247,8 @@
 								<option value="">pilih golongan ..</option>
 								<?php
 									$sql 	= 'select * from gol order by id_gol asc';
-									$exe 	= mysql_query($sql);
-									while($res=mysql_fetch_assoc($exe)){
+									$exe 	= mysqli_query($con,$sql);
+									while($res=mysqli_fetch_assoc($exe)){
 										echo '<option value="'.$res[id_gol].'">'.$res[gol].'</option>';
 									}
 								?>
@@ -269,8 +269,8 @@
 								<option value="">pilih jabatan ..</option>
 								<?php
 									$sql 	= 'select * from jab order by id_jab asc';
-									$exe 	= mysql_query($sql);
-									while($res=mysql_fetch_assoc($exe)){
+									$exe 	= mysqli_query($con,$sql);
+									while($res=mysqli_fetch_assoc($exe)){
 										echo '<option value="'.$res[id_jab].'">'.$res[jab].'</option>';
 									}
 								?>

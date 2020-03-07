@@ -33,10 +33,10 @@
 								dk.`status` = "checked"
 							GROUP BY s.id_katkeg
 						)tbdk on tbdk.id_katkeg = kk.idkatkeg';
-				$exe = mysql_query($sql);
+				$exe = mysqli_query($con,$sql);
 				$data= array();
 				
-				while ($res=mysql_fetch_assoc($exe)) {
+				while ($res=mysqli_fetch_assoc($exe)) {
 					$data[]=$res;
 				}
 
@@ -71,14 +71,14 @@
 								)';
 					}
 
-					$sisa = trim(mysql_real_escape_string($_POST['sisaTB']));
+					$sisa = trim(mysqli_real_escape_string($con,$_POST['sisaTB']));
 					$sql.=' dtksisa set poin='.$sisa.', remain='.$sisa.$sql2;
 					// print_r($sql);exit();
-					$exe=mysql_query($sql);
+					$exe=mysqli_query($con,$sql);
 					
 					if($exe){
 						$sql2 = 'UPDATE dsn set sisaStatus="invalid" where iduser='.$_SESSION['iduser'];
-						$exe2 = mysql_query($sql2);
+						$exe2 = mysqli_query($con,$sql2);
 						if($exe2)
 							echo '{"status":"sukses"}';
 					}else{
@@ -105,7 +105,7 @@
 								GROUP BY
 									h.idhistjab
 							) tbdh ';
-				$re = mysql_fetch_assoc(mysql_query($sq));
+				$re = mysqli_fetch_assoc(mysqli_query($con,$sq));
 
 				$sq2 = 'SELECT
 							COUNT(*)jum2
@@ -114,7 +114,7 @@
 							JOIN dsn d ON d.iddsn = h.iddsn
 						WHERE
 							d.iduser = '.$_SESSION['iduser'];
-				$re2 = mysql_fetch_assoc(mysql_query($sq2));
+				$re2 = mysqli_fetch_assoc(mysqli_query($con,$sq2));
 
 				if($re['jum']<1){ // tidak pernah  punya sisa dan ... 
 					if ($re2['jum2']>1) { // pernah naik pngkat
@@ -132,8 +132,8 @@
 
 				// print_r($punya);exit();
 				$sql = 'SELECT sisaStatus from dsn where iduser='.$_SESSION['iduser'];
-				$exe = mysql_query($sql);
-				$res = mysql_fetch_assoc($exe);
+				$exe = mysqli_query($con,$sql);
+				$res = mysqli_fetch_assoc($exe);
 				// print_r($res);exit();
 
 				$sql2 = 'SELECT 
@@ -159,9 +159,9 @@
 								h.status=1
 						) tbds ON tbds.idkatkeg = katkeg.idkatkeg';
 				// print_r($sql2);exit();
-				$exe2 = mysql_query($sql2);
+				$exe2 = mysqli_query($con,$sql2);
 				$sisaArr =array();
-				while ($res2=mysql_fetch_assoc($exe2)) {
+				while ($res2=mysqli_fetch_assoc($exe2)) {
 					$sisa1 = ($res2['poin']==null)?0:$res2['poin'];
 					$sisa2 = $res2['poin'];
 					$sisaArr[]=array(
@@ -243,15 +243,15 @@
 							ORDER BY
 								dk.tglinput DESC';
 				// print_r($sql);exit();
-				$exe	= mysql_query($sql);
-				$res	= mysql_fetch_assoc($exe);
+				$exe	= mysqli_query($con,$sql);
+				$res	= mysqli_fetch_assoc($exe);
 
 				if($exe){
 					$bukegArr = array();
 					$sql2 = 'SELECT * from bukeg where iddtk = '.$_GET['iddtk'].' order by  idbukeg desc';
 					// print_r($sql2);exit();
-					$exe2 = mysql_query($sql2);
-					while($res2 = mysql_fetch_assoc($exe2)){
+					$exe2 = mysqli_query($con,$sql2);
+					while($res2 = mysqli_fetch_assoc($exe2)){
 						$bukegArr[] = $res2;
 					}
 
@@ -267,7 +267,7 @@
 							"waktu":"'.$res['waktu'].'",
 							"tempat":"'.$res['tempat'].'",
 							"bukegArr":'.json_encode($bukegArr).'}';
-							// "ket":"'.mysql_real_escape_string(stripslashes(htmlspecialchars($res['ket'],ENT_QUOTES))).'",
+							// "ket":"'.mysqli_real_escape_string($con,stripslashes(htmlspecialchars($res['ket'],ENT_QUOTES))).'",
 
 					}else{
 						echo '{"status":"bukeg_kosong"}';
@@ -284,18 +284,18 @@
 			#hapus : kegiatan ----------------------------------------------------------------
 					case 'dtk':
 						$sqlz	= 'SELECT * from bukeg where iddtk='.$_GET['iddtk'];
-						$exez	= mysql_query($sqlz);
-						$jumz	= mysql_num_rows($exez);
+						$exez	= mysqli_query($con,$sqlz);
+						$jumz	= mysqli_num_rows($exez);
 
 						if($jumz>0){
-							while($resz=mysql_fetch_assoc($exez)){
+							while($resz=mysqli_fetch_assoc($exez)){
 								$linkx = $dir.$resz['file'];
 								unlink($linkx);
 							}
 						}
 						
 						$sql1 	= 'DELETE from dtk where iddtk ='.$_GET['iddtk'];
-						$exe1	= mysql_query($sql1);
+						$exe1	= mysqli_query($con,$sql1);
 						if($exe1){
 							echo '{"status":"sukses","iddtk":"'.$_GET['iddtk'].'"}';
 						}else{
@@ -307,7 +307,7 @@
 			#hapus : bukeg ----------------------------------------------------------------
 					case 'bukeg':
 						$sql1 	= 'DELETE from bukeg where file ="'.$_GET['file'].'"';
-						$exe1	= mysql_query($sql1);
+						$exe1	= mysqli_query($con,$sql1);
 
 						if($exe1){
 							$linkx = $dir.$_GET['file'];
@@ -377,10 +377,10 @@
 						// 						d.idkeg = k.idkeg';
 						// }
 						// print_r($sql);exit();
-						$exe	= mysql_query($sql);
+						$exe	= mysqli_query($con,$sql);
 						$subkatkeg	= array();
 						
-						while($res=mysql_fetch_assoc($exe)){
+						while($res=mysqli_fetch_assoc($exe)){
 							$keg=array();
 							$sql2 = 'SELECT 
 										kegiatan.idkeg, kegiatan.nakeg
@@ -388,8 +388,8 @@
 										kegiatan 
 										JOIN subkatkeg on subkatkeg.id_subkatkeg = kegiatan.id_subkatkeg
 									where subkatkeg.id_subkatkeg = '.$res['id_subkatkeg'];
-							$exe2 = mysql_query($sql2);
-							while ($res2=mysql_fetch_assoc($exe2)) {
+							$exe2 = mysqli_query($con,$sql2);
+							while ($res2=mysqli_fetch_assoc($exe2)) {
 								$keg[]=$res2;
 							}
 							$subkatkeg[]=array(
@@ -471,8 +471,8 @@
 						}
 						// print_r($res);exit();	
 						
-						$exe	= mysql_query($sql);
-						$res 	= mysql_fetch_assoc($exe);
+						$exe	= mysqli_query($con,$sql);
+						$res 	= mysqli_fetch_assoc($exe);
 							$isGroup = isset($res['isGroup'])?$res['isGroup']:'';
 							$isLeader = isset($res['isLeader'])?$res['isLeader']:'';
 							$jumAnggota = isset($res['jumAnggota'])?$res['jumAnggota']:'';
@@ -585,9 +585,9 @@
 				#end of paging	 
 				
 				#ada data
-				if(mysql_num_rows($result)!=0){
+				if(mysqli_num_rows($result)!=0){
 					$nox 	= $starting+1;
-					while($res = mysql_fetch_array($result)){
+					while($res = mysqli_fetch_array($result)){
 						if($res['status']=='new'){ //belum divalidasi
 							$info	= 'pending';
 							$kegTR	= 'infox success';

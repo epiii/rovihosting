@@ -57,8 +57,8 @@
 					WHERE
 						h.`status` = 1
 					AND '.$id;
-			$exe	= mysql_query($sql);
-			$res 	= mysql_fetch_assoc($exe);
+			$exe	= mysqli_query($con,$sql);
+			$res 	= mysqli_fetch_assoc($exe);
 			// print_r($res);exit();
 			
 			$sqlsu 	= 'SELECT 
@@ -217,10 +217,10 @@
 								tbpoinC.idkeg';
 					// print_r($sqlsu);exit();
 					
-					$exesu = mysql_query($sqlsu);
+					$exesu = mysqli_query($con,$sqlsu);
 					$no =1;$tot=0;
 					#loop sub unsur ====================================
-					while ($ressu = mysql_fetch_assoc($exesu)){
+					while ($ressu = mysqli_fetch_assoc($exesu)){
 						$tb.='<tr bgcolor="white">
 								<td align="right">'.$no.'.</td>
 								<td colspan="6">'.$ressu['nakeg'].'</td>
@@ -288,11 +288,11 @@
 								AND k.idkeg = '.$ressu['idkeg'].'
 								ORDER BY
 									dk.tglinput DESC';
-						$exedk = mysql_query($sqldk);
+						$exedk = mysqli_query($con,$sqldk);
 						$no2=1;
 					
 						#loop detail kegiatan ==========================
-						while ($resdk=mysql_fetch_assoc($exedk)) {
+						while ($resdk=mysqli_fetch_assoc($exedk)) {
 							$tb.='<tr bgcolor="white">
 									<td align="right"></td>
 									<td valign="top" align="right">'.$no2.'.</td>
@@ -416,10 +416,10 @@
 										cum = "'.$_GET['kat'].'"
 								)';
 
-					$exeds = mysql_query($sqlds);
+					$exeds = mysqli_query($con,$sqlds);
 					$tot=0;
 					#loop sub unsur ====================================
-					while ($resds = mysql_fetch_assoc($exeds)){
+					while ($resds = mysqli_fetch_assoc($exeds)){
 						$tb.='<tr bgcolor="white">
 								<td colspan="6" style="text-transform:capitalize;font-weight:bold;">'.$resds['dsubkatkeg'].'</td>
 							</tr>';
@@ -488,13 +488,13 @@
 									dk.tglinput DESC';
 
 						// print_r($sqldk);
-						$exedk = mysql_query($sqldk);
+						$exedk = mysqli_query($con,$sqldk);
 						$no2=1;
-						if(mysql_num_rows($exedk)==0){
+						if(mysqli_num_rows($exedk)==0){
 							$tb.='<tr bgcolor="white"><td colspan="7" align="center" bgcolor="grey">kosong </td></tr>';
 						}else{
 							#loop detail kegiatan ==========================
-							while ($resdk=mysql_fetch_assoc($exedk)) {
+							while ($resdk=mysqli_fetch_assoc($exedk)) {
 								//print_r($resdk);exit();
 								$tb.='<tr bgcolor="white">
 										<td valign="top" align="right">'.$no2.'</td>
@@ -628,10 +628,10 @@
 								tbpoinC.idkeg';
 					//print_r($sqlsu);exit();
 					
-					$exesu = mysql_query($sqlsu);
+					$exesu = mysqli_query($con,$sqlsu);
 					$no =1;$tot=0;
 					#loop sub unsur ====================================
-					while ($ressu = mysql_fetch_assoc($exesu)){
+					while ($ressu = mysqli_fetch_assoc($exesu)){
 						$tb.='<tr bgcolor="white">
 								<td align="right">'.$no.'.</td>
 								<td colspan="7">'.$ressu['nakeg'].'</td>
@@ -699,11 +699,11 @@
 								AND k.idkeg = '.$ressu['idkeg'].'
 								ORDER BY
 									dk.tglinput DESC';
-						$exedk = mysql_query($sqldk);
+						$exedk = mysqli_query($con,$sqldk);
 						$no2=1;
 					
 						#loop detail kegiatan ==========================
-						while ($resdk=mysql_fetch_assoc($exedk)) {
+						while ($resdk=mysqli_fetch_assoc($exedk)) {
 							$tb.='<tr bgcolor="white">
 									<td align="right"></td>
 									<td valign="top" align="right">'.$no2.'</td>
@@ -845,10 +845,10 @@
 								tbpoinC.idkeg';
 					//print_r($sqlsu);exit();
 					
-					$exesu = mysql_query($sqlsu);
+					$exesu = mysqli_query($con,$sqlsu);
 					$no =1;$tot=0;
 					#loop sub unsur ====================================
-					while ($ressu = mysql_fetch_assoc($exesu)){
+					while ($ressu = mysqli_fetch_assoc($exesu)){
 						$tb.='<tr bgcolor="white">
 								<td align="right">'.$no.'.</td>
 								<td colspan="7">'.$ressu['nakeg'].'</td>
@@ -917,11 +917,11 @@
 								AND k.idkeg = '.$ressu['idkeg'].'
 								ORDER BY
 									dk.tglinput DESC';
-						$exedk = mysql_query($sqldk);
+						$exedk = mysqli_query($con,$sqldk);
 						$no2=1;
 					
 						#loop detail kegiatan ==========================
-						while ($resdk=mysql_fetch_assoc($exedk)) {
+						while ($resdk=mysqli_fetch_assoc($exedk)) {
 							$tb.='<tr bgcolor="white">
 									<td align="right"></td>
 									<td valign="top" align="right">'.$no2.'</td>

@@ -105,8 +105,8 @@
 		WHERE ktg.cum ="'.$cum.'"
 		GROUP BY 
 			ktg.idkatkeg';
-		$exe = mysql_query($sql);
-		$res = mysql_fetch_assoc($exe);
+		$exe = mysqli_query($con,$sql);
+		$res = mysqli_fetch_assoc($exe);
 		return round($res[$tipe],2);
 	}
 
@@ -218,8 +218,8 @@
 					GROUP BY 
 						ktg.idkatkeg
 				)tbsub';
-		$exe = mysql_query($sql);
-		$res = mysql_fetch_assoc($exe);
+		$exe = mysqli_query($con,$sql);
+		$res = mysqli_fetch_assoc($exe);
 		return round($res[$tipe],2);
 	}
 ?>

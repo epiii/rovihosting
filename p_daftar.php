@@ -5,6 +5,9 @@
 	
 	$aksi		= isset($_POST['aksi'])?$_POST['aksi']:'';
 	$kategori	= isset($_POST['kategori'])?$_POST['kategori']:'';
+	
+	// pr($_REQUEST);
+	
 	switch($aksi){
 		//cek ============
 		case 'combo':
@@ -12,9 +15,9 @@
 				case 'fak':
 					$sql="select * from jur where idfak='$_POST[fak]'";
 					#var_dump($sql);exit();
-					$exe=mysql_query($sql);
+					$exe=mysqli_query($con,$sql);
 					$data=array();
-					while($res=mysql_fetch_assoc($exe)){
+					while($res=mysqli_fetch_assoc($exe)){
 						$data[]=$res;
 					}	
 					if($data!=NULL){
@@ -26,9 +29,9 @@
 				case 'jur':
 					$sql="select * from prodi where idjur='$_POST[jur]'";
 					#var_dump($sql);exit();
-					$exe=mysql_query($sql);
+					$exe=mysqli_query($con,$sql);
 					$data=array();
-					while($res=mysql_fetch_assoc($exe)){
+					while($res=mysqli_fetch_assoc($exe)){
 						$data[]=$res;
 					}	
 					if($data!=NULL){
@@ -46,8 +49,8 @@
 				case 'username':
 					$sql	= "select * from user where username = '$_POST[username]'";
 					//var_dump($sql);exit();
-					$exe	= mysql_query($sql);
-					$jum	= mysql_num_rows($exe);
+					$exe	= mysqli_query($con,$sql);
+					$jum	= mysqli_num_rows($exe);
 					if($exe && $jum>0){
 						echo '{"status":"ada"}';
 					}else{
@@ -57,8 +60,8 @@
 				case 'nip':
 					$sql	= "select * from dsn where nip = '$_POST[nip]'";
 					//var_dump($sql);exit();
-					$exe	= mysql_query($sql);
-					$jum	= mysql_num_rows($exe);
+					$exe	= mysqli_query($con,$sql);
+					$jum	= mysqli_num_rows($exe);
 					if($exe && $jum>0){
 						echo '{"status":"ada"}';
 					}else{
@@ -68,8 +71,8 @@
 				case 'karpeg':
 					$sql	= "select * from dsn where karpeg = '$_POST[karpeg]'";
 					//var_dump($sql);exit();
-					$exe	= mysql_query($sql);
-					$jum	= mysql_num_rows($exe);
+					$exe	= mysqli_query($con,$sql);
+					$jum	= mysqli_num_rows($exe);
 					if($exe && $jum>0){
 						echo '{"status":"ada"}';
 					}else{
@@ -82,41 +85,41 @@
 		//tambah ============
 		case 'tambah':
 		
-				$sql1	= "insert into user set username	= '".trim(mysql_real_escape_string($_POST['_un']))."',
+				$sql1	= "insert into user set username	= '".trim(mysqli_real_escape_string($con,$_POST['_un']))."',
 												password	= '".md5($_POST['_ps'])."',
 												level		= 'user'";
 				// var_dump($sql1);exit();
-				$exe1	= mysql_query($sql1);
+				$exe1	= mysqli_query($con,$sql1);
 				#var_dump($exe1);exit();
-				$id1	= mysql_insert_id();
+				$id1	= mysqli_insert_id($con);
 				
 				$tgl	= tgl_indo3($_POST['_tgll']);
 				$sql2	= "insert into dsn set  iduser 	='$id1',
-												gelard 	='".trim(mysql_real_escape_string($_POST['_gd']))."',
-												namad 	='".trim(mysql_real_escape_string($_POST['_nd']))."',
-												namab 	='".trim(mysql_real_escape_string($_POST['_nb']))."',
-												gelarb 	='".trim(mysql_real_escape_string($_POST['_gb']))."',
+												gelard 	='".trim(mysqli_real_escape_string($con,$_POST['_gd']))."',
+												namad 	='".trim(mysqli_real_escape_string($con,$_POST['_nd']))."',
+												namab 	='".trim(mysqli_real_escape_string($con,$_POST['_nb']))."',
+												gelarb 	='".trim(mysqli_real_escape_string($con,$_POST['_gb']))."',
 												idprodi = ".$_POST['_prodi'].",
-												nip 	=".mysql_real_escape_string($_POST['_nip']).",
+												nip 	=".mysqli_real_escape_string($con,$_POST['_nip']).",
 												karpeg 	=UPPER('".trim($_POST['_kg'])."'),
 												tl 		=LOWER('".$_POST['_tl']."'),
-												tgll 	='".trim(mysql_real_escape_string($tgl))."',
+												tgll 	='".trim(mysqli_real_escape_string($con,$tgl))."',
 												jk 		='".$_POST['_jk']."',
 												agama	='".$_POST['_agm']."'";
 				// var_dump($sql2);exit();
-				$exe2	= mysql_query($sql2);
+				$exe2	= mysqli_query($con,$sql2);
 				#var_dump($exe2);exit();
-				$id2	= mysql_insert_id();
+				$id2	= mysqli_insert_id($con);
 			
 			$sql3	= "insert into histjab set 	iddsn	= '".$id2."',
 												id_pt	= '".$_POST['_pt']."',
-												tglgols	= '".trim(mysql_real_escape_string(tgl_indo3($_POST['_tglgol'])))."',
-												tgljabs	= '".trim(mysql_real_escape_string(tgl_indo3($_POST['_tgljab'])))."',
+												tglgols	= '".trim(mysqli_real_escape_string($con,tgl_indo3($_POST['_tglgol'])))."',
+												tgljabs	= '".trim(mysqli_real_escape_string($con,tgl_indo3($_POST['_tgljab'])))."',
 												id_gol	= '".$_POST['_gol']."',
 												id_jab	= '".$_POST['_jab']."',
 												status	= 1 ";
 			#var_dump($sql3);exit();
-			$exe3	= mysql_query($sql3);
+			$exe3	= mysqli_query($con,$sql3);
 			#var_dump($exe3);exit();
 			//end of simpan histjob
 			// var_dump($sql3);exit();
@@ -128,6 +131,3 @@
 			}
 		break;
 	}
-?>
-
- 

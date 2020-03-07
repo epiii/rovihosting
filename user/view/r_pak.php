@@ -42,8 +42,8 @@
 
                 WHERE
                   h.`status` = 1 and '.$id;
-          $exe = mysql_query($sql);
-          $res = mysql_fetch_assoc($exe);
+          $exe = mysqli_query($con,$sql);
+          $res = mysqli_fetch_assoc($exe);
           $jk=($res['jk']=="P")?"Perempuan":"Laki-laki";
           $subOld = qpak($id,"A","remain") + qpak($id,"B","remain") + qpak($id,"C","remain") ;
           $subNew = qpak($id,"A","poinCur") + qpak($id,"B","poinCur") + qpak($id,"C","poinCur") ;

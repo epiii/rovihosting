@@ -78,9 +78,9 @@
 					$sql = 'SELECT * from jab order by jab asc';
 					// var_dump($sql);exit();
 
-					$exe	= mysql_query($sql);
+					$exe	= mysqli_query($con,$sql);
 					$datax	= array();
-					while($res=mysql_fetch_assoc($exe)){
+					while($res=mysqli_fetch_assoc($exe)){
 						$datax[]=$res;
 					}
 										
@@ -116,9 +116,9 @@
 					
 					$sql = 'SELECT * FROM gol where id_jab ='.$_GET['id_jab'];
 					#var_dump($sql);exit();
-					$exe	= mysql_query($sql);
+					$exe	= mysqli_query($con,$sql);
 					$datax	= array();
-					while($res=mysql_fetch_assoc($exe)){
+					while($res=mysqli_fetch_assoc($exe)){
 						$datax[]=$res;
 					}
 					
@@ -151,9 +151,9 @@
 					ORDER BY
 						gol ASC";
 			//var_dump($sql);exit();
-			$exe	= mysql_query($sql);
+			$exe	= mysqli_query($con,$sql);
 			#var_dump($exe);exit();
-			$res	= mysql_fetch_assoc($exe);
+			$res	= mysqli_fetch_assoc($exe);
 			if($exe){
 				echo '{
 					"jabatan":"'.$res['jab'].'",
@@ -172,13 +172,13 @@
 		
 		#ubah  ==============================================================================================
 		case 'ubah':
-			$sql = "update  rule set 	point	= '".mysql_real_escape_string($_POST['pointTB'])."',
-										id_pt	= '".mysql_real_escape_string($_POST['id_ptTB'])."',
-										id_gol		= '".mysql_real_escape_string($_POST['id_golTB'])."',
-										masa	= '".mysql_real_escape_string($_POST['masaTB'])."'
+			$sql = "update  rule set 	point	= '".mysqli_real_escape_string($con,$_POST['pointTB'])."',
+										id_pt	= '".mysqli_real_escape_string($con,$_POST['id_ptTB'])."',
+										id_gol		= '".mysqli_real_escape_string($con,$_POST['id_golTB'])."',
+										masa	= '".mysqli_real_escape_string($con,$_POST['masaTB'])."'
 							where id_rule=".$_GET['id_rule'];
 		//var_dump($sql);exit();
-			$exe	= mysql_query($sql);
+			$exe	= mysqli_query($con,$sql);
 			if($exe){
 				echo '{"status":"sukses"}';
 			}else{
@@ -188,12 +188,12 @@
 		break;
 		#tambah  ==============================================================================================
 		case 'tambah':
-			$sql = "INSERT into rule set	id_gol	= '".mysql_real_escape_string($_POST['id_golTB'])."',
-											masa	= '".mysql_real_escape_string($_POST['masaTB'])."',
-											id_pt	= '".mysql_real_escape_string($_POST['id_ptTB'])."',
-											point	= '".mysql_real_escape_string($_POST['pointTB'])."'";
+			$sql = "INSERT into rule set	id_gol	= '".mysqli_real_escape_string($con,$_POST['id_golTB'])."',
+											masa	= '".mysqli_real_escape_string($con,$_POST['masaTB'])."',
+											id_pt	= '".mysqli_real_escape_string($con,$_POST['id_ptTB'])."',
+											point	= '".mysqli_real_escape_string($con,$_POST['pointTB'])."'";
 			// print_r($sql);exit();
-			$exe	= mysql_query($sql);
+			$exe	= mysqli_query($con,$sql);
 			if($exe){
 				echo '{"status":"sukses"}';
 			}else{
@@ -204,7 +204,7 @@
 		#hapus ==============================================================================================
 		case 'hapus':
 			$sql	= "delete from rule where id_rule ='$_GET[id_rule]'";
-			$exe	= mysql_query($sql);
+			$exe	= mysqli_query($con,$sql);
 			
 			if($exe){
 				echo '{"status":"sukses"}';
@@ -246,10 +246,10 @@
 			#end of paging	 
 			
 			#ada data
-			if(mysql_num_rows($result)!=0)
+			if(mysqli_num_rows($result)!=0)
 			{
 				$nox 	= $starting+1;
-				while($res = mysql_fetch_array($result)){	
+				while($res = mysqli_fetch_array($result)){	
 					$btn ="	 <td>
 								 <a class='btn' href=\"javascript:editRule('$res[id_rule]');\" 
 								 role='button'><i class='icon-pencil'></i></a>

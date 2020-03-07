@@ -74,8 +74,8 @@
       					WHERE
       						h.`status` = 1
       					AND '.$idwhr;
-			$exe1	= mysql_query($sql1);
-			$res1 	= mysql_fetch_assoc($exe1);
+			$exe1	= mysqli_query($con,$sql1);
+			$res1 	= mysqli_fetch_assoc($exe1);
       $jk=($res1['jk']=='P')?'Perempuan':'Laki-laki';
 			// echo '<pre>';
 			// 	print_r($res1);exit();

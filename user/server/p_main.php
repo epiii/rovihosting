@@ -31,10 +31,10 @@
 			#end of paging	 
 			
 			#ada data
-			if(mysql_num_rows($result)!=0)
+			if(mysqli_num_rows($result)!=0)
 			{
 				$nox 	= $starting+1;
-				while($res = mysql_fetch_array($result))
+				while($res = mysqli_fetch_array($result))
 				{	
 					$fullNews	= $res['deskripsi'];
 					$fewNews 	= substr($fullNews,0,200);
@@ -83,9 +83,9 @@
 	
 	case 'detail':
 		$sql	= 'SELECT * from news where idnews = '.$_GET['id'];
-		$exe	= mysql_query($sql);
-		$res	= mysql_fetch_assoc($exe);
-		$jum	= mysql_num_rows($exe);
+		$exe	= mysqli_query($con,$sql);
+		$res	= mysqli_fetch_assoc($exe);
+		$jum	= mysqli_num_rows($exe);
 		
 		$tgl = tgl_indo($res['tglupdate']);
 		if($jum>0 & $exe!=NULL){

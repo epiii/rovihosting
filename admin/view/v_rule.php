@@ -87,11 +87,11 @@
 					<option value="">pilih pend terakhir ..</option>
 					<?php
 						$sql = "select * from pt order by pt asc";
-						$exe = mysql_query($sql);
-						if(mysql_num_rows($exe)==0){
+						$exe = mysqli_query($con,$sql);
+						if(mysqli_num_rows($exe)==0){
 							echo "<option value=''>pend. terakhir  masih kosong</option>";
 						}else{
-							while($res = mysql_fetch_assoc($exe)){
+							while($res = mysqli_fetch_assoc($exe)){
 								echo "<option value='$res[id_pt]'>$res[pt]</option>";
 							}
 						}

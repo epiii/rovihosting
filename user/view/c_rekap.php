@@ -60,7 +60,7 @@
 				// var_dump($sqldos);exit();
 				$exedos		= mysql_query ($sqldos);
 				// var_dump($exedos);exit();
-				$resdos		= mysql_fetch_assoc($exedos);
+				$resdos		= mysqli_fetch_assoc($exedos);
 				// print_r($resdos);exit();
 			
 				#panggil library FPDF
@@ -185,10 +185,10 @@
 							)tbdtk ON tbdtk.idkatkeg = ktg.idkatkeg
 						GROUP BY 
 							ktg.idkatkeg';
-						$exekat 	= mysql_query($sqlkat)or die(mysql_error());
+						$exekat 	= mysqli_query($con,$sqlkat)or die(mysqli_error($con));
 						$tot		= 0;
 						//loop kategori kegiatan ------------------------------------------------------
-						while($reskat=mysql_fetch_assoc($exekat))
+						while($reskat=mysqli_fetch_assoc($exekat))
 						{
 							// var_dump($reskat);exit();
 							//kategori kegiatan's view ------------------------------------------------
@@ -222,11 +222,11 @@
 													(t.status="done" and t.sisa!=0)
 												)';
 									// var_dump($sqlkeg);exit();
-								$exekeg= mysql_query($sqlkeg);
+								$exekeg= mysqli_query($con,$sqlkeg);
 								$i = 1;
 								$sub=0;
 								// loop nama kegiatan  ----------------------------------------------------
-								while($reskeg=mysql_fetch_assoc($exekeg)){
+								while($reskeg=mysqli_fetch_assoc($exekeg)){
 									$poinx = ($reskeg['sisa']==0)?$reskeg['poin']:$reskeg['sisa'];
 									$pdf->SetFillColor(249, 246, 244);
 									$pdf->SetDrawColor(204, 204, 204);

@@ -36,8 +36,8 @@
 								g.urutan ASC';
 			// print_r($sqltgt);exit();
 			$gtotKum=0;
-			$exe= mysql_query($sql);
-			while ($res=mysql_fetch_assoc($exe)) {
+			$exe= mysqli_query($con,$sql);
+			while ($res=mysqli_fetch_assoc($exe)) {
 				$gtotKum+=$res['point'];
 				$itemKrgx=array();
 
@@ -58,9 +58,9 @@
 							ORDER BY 
 								idkatkeg ASC';
 
-				$exesub = mysql_query($sqlsub);
+				$exesub = mysqli_query($con,$sqlsub);
 				#cek subtotal per kategori
-				while ($ressub=mysql_fetch_assoc($exesub)) {
+				while ($ressub=mysqli_fetch_assoc($exesub)) {
 					if($x[$ressub['idkatkeg']]==0){ // kosong (0)
 						if($ressub['tipe']=='mx'){ // tipe maximum 
 							$valKrg		= abs($ressub['subTotTgtNum']-$x[$ressub['idkatkeg']]);
@@ -129,8 +129,8 @@
 					WHERE
 						d.iduser= '.$_SESSION['iduser'].' and 
 						h.status=1';
-			$exedsn	= mysql_query($sqldsn);
-			$resdsn	= mysql_fetch_assoc($exedsn);
+			$exedsn	= mysqli_query($con,$sqldsn);
+			$resdsn	= mysqli_fetch_assoc($exedsn);
 			// print_r($resdsn);exit();
 
 		// 	//end of proses untuk biodata dosen ----
@@ -251,8 +251,8 @@
 				GROUP BY 
 					ktg.idkatkeg';
 			// print_r($sqlkt);exit();
-			$exekt 	= mysql_query($sqlkt);
-			$jumkt 	= mysql_num_rows($exekt);
+			$exekt 	= mysqli_query($con,$sqlkt);
+			$jumkt 	= mysqli_num_rows($exekt);
 			$katArr	= array();
 			$gtotNumDt = 0;
 			
@@ -264,7 +264,7 @@
 			#kategori : ada ------------------------------------
 			else{
 				#loop kategori ---------------------------------
-				while($reskt= mysql_fetch_assoc($exekt)){
+				while($reskt= mysqli_fetch_assoc($exekt)){
 					#$subsisa = ($reskt['subsisa']==null)?0:$reskt['subsisa'];
 					$sqlkeg ='SELECT 
 								tbpoinC.idkeg,
@@ -335,13 +335,13 @@
 							GROUP BY 
 								tbpoinC.idkeg';
 					// print_r($sqlkeg);exit(); 	 	
-					$exekeg = mysql_query($sqlkeg);
-					$jum 	= mysql_num_rows($exekeg);
+					$exekeg = mysqli_query($con,$sqlkeg);
+					$jum 	= mysqli_num_rows($exekeg);
 					$kegArr = array();
 					$subtotDt	= 0;
 					
 					#loop item kegiatan (per kategori)------------------
-					while($reskeg=mysql_fetch_assoc($exekeg)){
+					while($reskeg=mysqli_fetch_assoc($exekeg)){
 						$kegArr[]=$reskeg;
 					}#end of loop item kegiatan (per kategori)------------------
 					// $subtotNumDt=($)	

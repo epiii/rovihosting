@@ -41,8 +41,8 @@
 								g.urutan ASC';
 			// print_r($sqltgt);exit();
 			$gtotKum=0;
-			$exe= mysql_query($sql);
-			while ($res=mysql_fetch_assoc($exe)) {
+			$exe= mysqli_query($con,$sql);
+			while ($res=mysqli_fetch_assoc($exe)) {
 				$gtotKum+=$res['point'];
 				$itemKrgx=array();
 
@@ -62,10 +62,10 @@
 								katkeg 
 							ORDER BY 
 								idkatkeg ASC';
-				$exesub = mysql_query($sqlsub);
+				$exesub = mysqli_query($con,$sqlsub);
 				
 				#cek subtotal per kategori
-				while ($ressub=mysql_fetch_assoc($exesub)) {
+				while ($ressub=mysqli_fetch_assoc($exesub)) {
 					if($x[$ressub['idkatkeg']]==0){ // kosong (0)
 						if($ressub['tipe']=='mx'){ // tipe maximum 
 							$valKrg		= abs($ressub['subTotTgtNum']-$x[$ressub['idkatkeg']]);
@@ -138,8 +138,8 @@
 						d.iddsn= '.$_GET['iddsn'].' and 
 						h.status=1';
 			// print_r($resdsn);exit();
-			$exedsn	= mysql_query($sqldsn);
-			$resdsn	= mysql_fetch_assoc($exedsn);
+			$exedsn	= mysqli_query($con,$sqldsn);
+			$resdsn	= mysqli_fetch_assoc($exedsn);
 
 		// 	//end of proses untuk biodata dosen ----
 			// if($resdsn['tmtGol']=='0000-00-00' and $resdsn['tmtJab']=='0000-00-00'){
@@ -154,7 +154,7 @@
 			}
 		//update status belum  dicek / sudah
 			$sqlst = 'UPDATE dsn set baru =0 WHERE iddsn='.$_GET['iddsn'];
-			$exest = mysql_query($sqlst);
+			$exest = mysqli_query($con,$sqlst);
 
 		#loop kat u/ notif ---------------------
 			// $snot ='SELECT 
@@ -225,12 +225,12 @@
 			// 				tbds ON tbds.idkatkeg 	= katkeg.idkatkeg
 			// 			)tbsisa on tbsisa.idkatkeg 	= tbpoinC.id_katkeg
 			// 			GROUP BY tbpoinC.id_katkeg';
-			// $enot  		= mysql_query($snot);
+			// $enot  		= mysqli_query($con,$snot);
 			// $subnot 	= array();
 			// $gtotnot 	= 0;
 			
 			// #loop item kegiatan (per kategori)------------------
-			// while($rnot=mysql_fetch_assoc($enot)){
+			// while($rnot=mysqli_fetch_assoc($enot)){
 			// 	$subnot[]=$rnot;
 			// 	$gtotnot+=$rnot['subnot'];
 			// }#end of loop item kegiatan (per kategori)------------------
@@ -384,8 +384,8 @@
 						)tbdtk ON tbdtk.idkatkeg = ktg.idkatkeg
 					GROUP BY 
 						ktg.idkatkeg';
-			$exekt 	= mysql_query($sqlkt);
-			$jumkt 	= mysql_num_rows($exekt);
+			$exekt 	= mysqli_query($con,$sqlkt);
+			$jumkt 	= mysqli_num_rows($exekt);
 			// print_r($exekt);exit();
 			
 			$katArr    = array();
@@ -400,7 +400,7 @@
 			#kategori : ada ------------------------------------
 			else{
 				#loop kategori ---------------------------------
-				while($reskt= mysql_fetch_assoc($exekt)){
+				while($reskt= mysqli_fetch_assoc($exekt)){
 					#$subsisa = ($reskt['subsisa']==null)?0:$reskt['subsisa'];
 					$sqlkeg ='SELECT 
 								tbpoinC.iddtk,
@@ -471,13 +471,13 @@
 									dk.tglinput desc
 							)tbpoinC';
 					// print_r($sqlkeg);exit();
-					$exekeg = mysql_query($sqlkeg);
-					$jum 	= mysql_num_rows($exekeg);
+					$exekeg = mysqli_query($con,$sqlkeg);
+					$jum 	= mysqli_num_rows($exekeg);
 					$kegArr = array();
 					$subtotDt	= 0;
 					
 					#loop item kegiatan (per kategori)------------------
-					while($reskeg=mysql_fetch_assoc($exekeg)){
+					while($reskeg=mysqli_fetch_assoc($exekeg)){
 						$kegArr[]=$reskeg;
 					}#end of loop item kegiatan (per kategori)------------------
 
@@ -640,7 +640,7 @@
 				GROUP BY 
 					ktg.idkatkeg desc';
 			// print_r($sqlkat);exit();
-			$exekat 	= mysql_query($sqlkat);
+			$exekat 	= mysqli_query($con,$sqlkat);
 			
 	    	//pilih history jabtan dosen x
 	    	$sqlh1 ='SELECT *
@@ -648,8 +648,8 @@
 					WHERE 
 						hh.STATUS=1 AND 
 						hh.iddsn='.$_GET['iddsn'];
-			$exeh1 = mysql_query($sqlh1);
-			$resh1 = mysql_fetch_assoc($exeh1);
+			$exeh1 = mysqli_query($con,$sqlh1);
+			$resh1 = mysqli_fetch_assoc($exeh1);
 
 			//insert baru history jabatan status = 1
 			$sqlh2 ='INSERT into histjab 
@@ -661,8 +661,8 @@
 						id_pt 	='.$resh1['id_pt'].', 
 						iddsn 	='.$_GET['iddsn'];
 			// print_r($sqlh2);exit();
-			$exeh2 = mysql_query($sqlh2);
-			$idhj 	= mysql_insert_id();
+			$exeh2 = mysqli_query($con,$sqlh2);
+			$idhj 	= mysqli_insert_id($con);
 
 			//ubah status 1 jadi 0
 			$sql2 ='UPDATE 
@@ -671,11 +671,11 @@
 						h.status=0
 					WHERE
 						h.idhistjab='.$resh1['idhistjab'];
-			$exe2 = mysql_query($sql2);
+			$exe2 = mysqli_query($con,$sql2);
 			// var_dump($idhj);exit();
 			#loop kategori ---------------------------
 			$selisih = 0;
-			while($reskat=mysql_fetch_assoc($exekat)){
+			while($reskat=mysqli_fetch_assoc($exekat)){
 				// insert histjab baru
 
 				// $selisih += $reskat['selisih'];
@@ -698,7 +698,7 @@
 					// $sqls.=$selisih.', remain='.$selisih;
 				}
 
-				$exes = mysql_query($sqls);
+				$exes = mysqli_query($con,$sqls);
 				if($exes)
 					$state='berhasil';
 				else
@@ -715,8 +715,8 @@
 		case 'viewSisa':
 			$sql = 'SELECT  concat(gelard," ",namad," ",namab," ",gelarb)as nama
 					from dsn where iddsn='.$_GET['iddsn'];
-			$exe = mysql_query($sql);
-			$res = mysql_fetch_assoc($exe);
+			$exe = mysqli_query($con,$sql);
+			$res = mysqli_fetch_assoc($exe);
 			// print_r($res);exit();
 			
 			$sql2 = 'SELECT
@@ -739,11 +739,11 @@
 						)
 						tbds ON tbds.idkatkeg = katkeg.idkatkeg';
 			// print_r($sql2);exit();
-			$exe2 = mysql_query($sql2);
+			$exe2 = mysqli_query($con,$sql2);
 			$sisaArr =array();
 			$remainStatus = 0; //habis terpakai
 			
-			while ($res2=mysql_fetch_assoc($exe2)) {
+			while ($res2=mysqli_fetch_assoc($exe2)) {
 				$sisa = ($res2['poin']==null)?0:$res2['poin'];
 				$remain = ($res2['remain']==null)?0:$res2['remain'];
 				if($remain>0){ //remain masih tersisa 
@@ -773,7 +773,7 @@
 				$status=($_GET['sisaStatus']=='valid')?'invalid':'valid';
 				$sql='UPDATE dsn  set sisaStatus="'.$status.'" where iddsn='.$_GET['iddsn'];
 				// print_r($sql);exit();
-				$exe=mysql_query($sql);
+				$exe=mysqli_query($con,$sql);
 				if($exe){
 					echo '{"status":"sukses","sisaStatus":"'.$status.'"}';
 				}else{
@@ -795,10 +795,10 @@
 					$statusTB = 'valid';
 				}
 				$sql = 'UPDATE bukeg set 	status 		= "'.$statusTB.'",
-											keterangan 	= "'.trim(mysql_real_escape_string($_POST['keteranganTB'][$i])).'"
+											keterangan 	= "'.trim(mysqli_real_escape_string($con,$_POST['keteranganTB'][$i])).'"
 						WHERE  idbukeg = '.$_POST['idH'][$i];
 				// print_r($sql);exit();
-				$exe = mysql_query($sql);
+				$exe = mysqli_query($con,$sql);
 				if($exe){
 					$sukses=true;
 					if($statusTB=='valid'){
@@ -814,7 +814,7 @@
 					$statusx ='valid';
 				}
 				$sql2 	= "update dtk set status = '$statusx' where iddtk='$_GET[iddtk]'";
-				$exe2	= mysql_query($sql2);
+				$exe2	= mysqli_query($con,$sql2);
 				if($exe2){
 					echo '{"status":"sukses","statusx":"'.$statusx.'"}';
 				}
@@ -939,13 +939,13 @@
 			$obj 	= new pagination_class($menu,$sql,$starting,$recpage);
 			$result = $obj->result;
 			#end of paging	 
-			$jum = mysql_num_rows($result);
+			$jum = mysqli_num_rows($result);
 			// var_dump($jum);exit();
 			$tb = '';
 			#ada data
 			if($jum!=0){
 				$nox 	= $starting+1;
-				while($res = mysql_fetch_array($result)){	
+				while($res = mysqli_fetch_array($result)){	
 					#info : row baru(update)
 					if($res['baru']==1){
 						$trclr='class="warning"';$info='baru';
@@ -1028,18 +1028,18 @@
 			switch($menu){
 				# view bukti kegiatan ============
 				case 'bukeg':
-					$exe1 = mysql_query("UPDATE dtk set status='checked' where iddtk = '$_GET[iddtk]'");
+					$exe1 = mysqli_query($con,"UPDATE dtk set status='checked' where iddtk = '$_GET[iddtk]'");
 					
 					$sql = 'SELECT * 
 							from dtk join kegiatan on dtk.idkeg = kegiatan.idkeg 
 							where dtk.iddtk='.$_GET['iddtk'];
-					$exe = mysql_query($sql);
-					$res = mysql_fetch_assoc($exe);
+					$exe = mysqli_query($con,$sql);
+					$res = mysqli_fetch_assoc($exe);
 
 					$sql2 = 'SELECT * from bukeg where iddtk='.$_GET['iddtk'];
-					$exe2 = mysql_query($sql2);
+					$exe2 = mysqli_query($con,$sql2);
 					$dataArr = array();
-					while($res2=mysql_fetch_assoc($exe2)){
+					while($res2=mysqli_fetch_assoc($exe2)){
 						$dataArr[]=$res2;	
 					}
 					// print_r($dataArr);exit();
@@ -1103,14 +1103,14 @@
 								ktg.idkatkeg';
 
 					// print_r($sqlkt);exit();
-					$exekt 	= mysql_query($sqlkt);
-					$jumkt 	= mysql_num_rows($exekt);
+					$exekt 	= mysqli_query($con,$sqlkt);
+					$jumkt 	= mysqli_num_rows($exekt);
 					$katArr	= array();
 					$itemKrg= array();
 					$gtotDt = 0;
 					
 					$sql = 'UPDATE dsn set baru=0 where iddsn ='.$_GET['iddsn'];
-					mysql_query($sql);
+					mysqli_query($con,$sql);
 				
 					#kategori : kosong --------------------------------
 					if($jumkt==0){
@@ -1121,7 +1121,7 @@
 					#kategori : ada ------------------------------------
 					else{
 						#loop kategori ---------------------------------
-						while($reskt= mysql_fetch_assoc($exekt)){
+						while($reskt= mysqli_fetch_assoc($exekt)){
 							$subsisa = ($reskt['subremain']==null)?0:$reskt['subremain'];
 
 							$kegArr = array();
@@ -1147,13 +1147,13 @@
 												)
 											)';
 							// print_r($sqlkeg);exit();
-							$exekeg = mysql_query($sqlkeg);
-							$jum 	= mysql_num_rows($exekeg);
+							$exekeg = mysqli_query($con,$sqlkeg);
+							$jum 	= mysqli_num_rows($exekeg);
 
 							$subtotDt	= 0;
 
 							//loop item kegiatan (per kategori)------------------
-							while($reskeg=mysql_fetch_assoc($exekeg)){
+							while($reskeg=mysqli_fetch_assoc($exekeg)){
 								if($reskeg['sisa']>0){
 									$poinAwl = $reskeg['poin'];
 									$poin=$reskeg['sisa'];
@@ -1244,8 +1244,8 @@
 							WHERE
 								d.iddsn= '.$_GET['iddsn'].' and h.status=1';
 					// var_dump($sql);exit();
-					$exe	= mysql_query($sql);
-					$res	= mysql_fetch_assoc($exe);
+					$exe	= mysqli_query($con,$sql);
+					$res	= mysqli_fetch_assoc($exe);
 					// print_r($sql);exit();
 	
 					if(isset($res['gtot'])==''){$gtot=0;}else{$gtot=$res['gtot'];}

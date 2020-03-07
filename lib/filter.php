@@ -1,8 +1,8 @@
 <?php
 	function filterx($data){
-		$filter = trim(mysql_real_escape_string(stripslashes(strip_tags(htmlspecialchars($data,ENT_QUOTES)))));
-		// $filter = trim(mysql_real_escape_string(stripslashes(strip_tags(htmlentities($data)))));
-		// $filter = mysql_real_escape_string(strip_tags($data));
+		$filter = trim(mysqli_real_escape_string($con,stripslashes(strip_tags(htmlspecialchars($data,ENT_QUOTES)))));
+		// $filter = trim(mysqli_real_escape_string($con,stripslashes(strip_tags(htmlentities($data)))));
+		// $filter = mysqli_real_escape_string($con,strip_tags($data));
 		return $filter;
 	}
 

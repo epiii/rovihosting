@@ -16,8 +16,8 @@
 		#ambiledit==============================================================================================
 		case 'ambiledit':
 			$sql = 'SELECT * from user  where iduser='.$_GET['iduser'];
-			$exe	= mysql_query($sql);
-			$res	= mysql_fetch_assoc($exe);
+			$exe	= mysqli_query($con,$sql);
+			$res	= mysqli_fetch_assoc($exe);
 			if($exe){
 				echo '{
 					"username":"'.$res['username'].'",
@@ -31,16 +31,16 @@
 		#ubah  ==============================================================================================
 		case 'ubah':
 			if(isset($_POST['passwordTB']) and $_POST['passwordTB']!=''){
-				$pass = ",password = '".md5(mysql_real_escape_string($_POST['passwordTB']))."'";
+				$pass = ",password = '".md5(mysqli_real_escape_string($con,$_POST['passwordTB']))."'";
 			}else{
 				$pass="";
 			}
-			$sql = "update  user set 	username 	= '".mysql_real_escape_string($_POST['usernameTB'])."',
-										level		= '".mysql_real_escape_string($_POST['levelTB'])."'
+			$sql = "update  user set 	username 	= '".mysqli_real_escape_string($con,$_POST['usernameTB'])."',
+										level		= '".mysqli_real_escape_string($con,$_POST['levelTB'])."'
 										$pass
 							where iduser=".$_GET['iduser'];
 			//var_dump($sql);exit();
-			$exe	= mysql_query($sql);
+			$exe	= mysqli_query($con,$sql);
 			if($exe){
 				echo '{"status":"sukses"}';
 			}else{
@@ -50,10 +50,10 @@
 		break;
 		#tambah  ==============================================================================================
 		case 'tambah':
-			$sql = "INSERT into user set 	username= '".trim(mysql_real_escape_string($_POST['usernameTB']))."',
-											password= '".md5(mysql_real_escape_string($_POST['passwordTB']))."',
+			$sql = "INSERT into user set 	username= '".trim(mysqli_real_escape_string($con,$_POST['usernameTB']))."',
+											password= '".md5(mysqli_real_escape_string($con,$_POST['passwordTB']))."',
 											level	= '$_POST[levelTB]'";
-			$exe	= mysql_query($sql);
+			$exe	= mysqli_query($con,$sql);
 			if($exe){
 				echo '{"status":"sukses"}';
 			}else{
@@ -64,7 +64,7 @@
 		#hapus ==============================================================================================
 		case 'hapus':
 			$sql	= "delete from user where iduser ='$_GET[iduser]'";
-			$exe	= mysql_query($sql);
+			$exe	= mysqli_query($con,$sql);
 			
 			if($exe){
 				echo '{"status":"sukses"}';
@@ -92,10 +92,10 @@
 			#end of paging	 
 			
 			#ada data
-			if(mysql_num_rows($result)!=0)
+			if(mysqli_num_rows($result)!=0)
 			{
 				$nox 	= $starting+1;
-				while($res = mysql_fetch_array($result)){	
+				while($res = mysqli_fetch_array($result)){	
 					if($res['level']=='adminf'){
 						$level = 'adm. falkultas';
 					}else{

@@ -178,6 +178,7 @@ $(document).ready(function(){
 	});
 	
 	function tambah(event){
+		
 		event.stopPropagation(); 
         event.preventDefault();
          

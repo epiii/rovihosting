@@ -10,7 +10,7 @@
 #hapus akun user (dosen) secara keseluruhan secara paralel otomatis (user + dsn + histjab + dtk + bukeg) =====================
 		case 'hapusAkun':
 			$sql = 'DELETE from user where iduser ='.$_SESSION['iduser'];
-			$exe = mysql_query($sql);
+			$exe = mysqli_query($con,$sql);
 			if($exe){
 				echo '{"status":"berhasil_hapus"}';
 			}
@@ -23,10 +23,10 @@
 		#pendidikan terakhir---------------------------------------------
 				case 'pt':
 					$sql 	= "	SELECT * from pt  order by pt  asc  ";
-					$kue	= mysql_query($sql);
+					$kue	= mysqli_query($con,$sql);
 					$ambil  = array();
 					
-					while($ambilR	= mysql_fetch_array($kue)){
+					while($ambilR	= mysqli_fetch_array($kue)){
 						$ambil[]=$ambilR;
 					}
 					
@@ -41,10 +41,10 @@
 		#golongan ---------------------------------------------------------
 				case 'gol':
 					$sql 	= "SELECT * from gol order by gol asc  ";
-					$kue	= mysql_query($sql);
+					$kue	= mysqli_query($con,$sql);
 					$ambil  = array();
 					
-					while($ambilR	= mysql_fetch_array($kue)){
+					while($ambilR	= mysqli_fetch_array($kue)){
 						$ambil[]=$ambilR;
 					}
 					
@@ -59,10 +59,10 @@
 		#jabatan -----------------------------------------------------------------
 				case 'jab':
 					$sql 	= "	select * from jab order by jab asc  ";
-					$kue	= mysql_query($sql);
+					$kue	= mysqli_query($con,$sql);
 					$ambil  = array();
 					
-					while($ambilR	= mysql_fetch_array($kue)){
+					while($ambilR	= mysqli_fetch_array($kue)){
 						$ambil[]=$ambilR;
 					}
 					
@@ -79,26 +79,26 @@
 # edit/ubah =======================================================================================================
 		case 'ubah':
 			# tabel dsn -------------------
-			$sql	= 'UPDATE dsn set  	gelard	= "'.trim(mysql_real_escape_string($_POST['gelardTB'])).'",
-										gelarb	= "'.trim(mysql_real_escape_string($_POST['gelarbTB'])).'",
-										namad	= LOWER("'.trim(mysql_real_escape_string($_POST['namadTB'])).'"),
-										namab	= LOWER("'.trim(mysql_real_escape_string($_POST['namabTB'])).'"),
-										nip		= '.mysql_real_escape_string($_POST['nipTB']).',
-										karpeg	= UPPER("'.trim(mysql_real_escape_string($_POST['karpegTB'])).'"),
+			$sql	= 'UPDATE dsn set  	gelard	= "'.trim(mysqli_real_escape_string($con,$_POST['gelardTB'])).'",
+										gelarb	= "'.trim(mysqli_real_escape_string($con,$_POST['gelarbTB'])).'",
+										namad	= LOWER("'.trim(mysqli_real_escape_string($con,$_POST['namadTB'])).'"),
+										namab	= LOWER("'.trim(mysqli_real_escape_string($con,$_POST['namabTB'])).'"),
+										nip		= '.mysqli_real_escape_string($con,$_POST['nipTB']).',
+										karpeg	= UPPER("'.trim(mysqli_real_escape_string($con,$_POST['karpegTB'])).'"),
 										agama	= "'.$_POST['agamaTB'].'",
 										jk		= "'.$_POST['jkTB'].'",
 										tl		= "'.$_POST['tlTB'].'",
-										tgll	= "'.tgl_indo3(trim(mysql_real_escape_string($_POST['tgllTB']))).'"
+										tgll	= "'.tgl_indo3(trim(mysqli_real_escape_string($con,$_POST['tgllTB']))).'"
 								WHERE	iduser	= '.$_SESSION['iduser'];						
 			# end of  tabel dsn ------------
 			// print_r($sql);exit();
 			# tabel user -------------------
 				if(isset($_POST['passBTB2']) && !empty($_POST['passBTB2'])){
-					$pass =',password="'.md5(trim(mysql_real_escape_string($_POST['passBTB2']))).'"';
+					$pass =',password="'.md5(trim(mysqli_real_escape_string($con,$_POST['passBTB2']))).'"';
 				}else{
 					$pass='';
 				}
-				$sql2 	= 'UPDATE user set username = "'.trim(mysql_real_escape_string($_POST['usernameTB'])).'"  '.$pass.' WHERE iduser='.$_SESSION['iduser'];
+				$sql2 	= 'UPDATE user set username = "'.trim(mysqli_real_escape_string($con,$_POST['usernameTB'])).'"  '.$pass.' WHERE iduser='.$_SESSION['iduser'];
 			# end of tabel user -------------------
 			
 			# tabel histjab -----------------------
@@ -111,21 +111,21 @@
 							d.iddsn = h.iddsn AND 
 							d.iduser = '.$_SESSION['iduser'].' AND 
 							h.STATUS = 1';
-				$exej	= mysql_query($sqlj);
-				$resj	= mysql_fetch_assoc($exej);
+				$exej	= mysqli_query($con,$sqlj);
+				$resj	= mysqli_fetch_assoc($exej);
 				$sql3	= 'UPDATE histjab set 	id_pt		= '.$_POST['ptTB'].',
 												id_gol	 	= '.$_POST['golsTB'].',
 												id_jab		= '.$_POST['jabsTB'].',
-												tgljabs  	= "'.tgl_indo3(trim(mysql_real_escape_string($_POST['TMTjabsTB']))).'", 
-												tglgols		= "'.tgl_indo3(trim(mysql_real_escape_string($_POST['TMTgolsTB']))).'"
+												tgljabs  	= "'.tgl_indo3(trim(mysqli_real_escape_string($con,$_POST['TMTjabsTB']))).'", 
+												tglgols		= "'.tgl_indo3(trim(mysqli_real_escape_string($con,$_POST['TMTgolsTB']))).'"
 										where  	idhistjab	='.$resj['idhistjab'];
 			# end of tabel histjab ---------------
 			// print_r($sql3);exit();
 
 			# eksekusi kueri ---------------------
-				$exe	= mysql_query($sql);
-				$exe2	= mysql_query($sql2);
-				$exe3	= mysql_query($sql3);
+				$exe	= mysqli_query($con,$sql);
+				$exe2	= mysqli_query($con,$sql2);
+				$exe3	= mysqli_query($con,$sql3);
 				if($exe && $exe2 && $exe3){
 					echo '{"status":"sukses"}';
 				}else{
@@ -160,8 +160,8 @@
 						h.`status` = 1
 					AND d.iduser ='.$_SESSION['iduser'];
 			// print_r($sql);exit();
-			$exe	= mysql_query($sql);
-			$res 	= mysql_fetch_array($exe);	
+			$exe	= mysqli_query($con,$sql);
+			$res 	= mysqli_fetch_array($exe);	
 			if($exe){
 				// if($res['gtot']==''){
 				// 	$gtot= 0;

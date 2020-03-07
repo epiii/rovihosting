@@ -17,9 +17,9 @@
 		//add
 		else{
 			$sql 	= 'select max(iddtk)as idnew from dtk';
-			$exe 	= mysql_query($sql)or die('eror sql cek id terakhir');
-			$res 	= mysql_fetch_assoc($exe);
-			$jumx 	= mysql_num_rows($exe);
+			$exe 	= mysqli_query($con,$sql)or die('eror sql cek id terakhir');
+			$res 	= mysqli_fetch_assoc($exe);
+			$jumx 	= mysqli_num_rows($exe);
 			if($jumx=0){ // baru
 				$idunik==1;
 			}else{ 		// data lanjutan
@@ -122,8 +122,8 @@
 							where 
 								h.iddsn	 = d.iddsn and
 								d.iduser =".$_SESSION['iduser'];
-			$exedsnx= mysql_query($sqldsnx);
-			$ambil 	= mysql_fetch_assoc($exedsnx);
+			$exedsnx= mysqli_query($con,$sqldsnx);
+			$ambil 	= mysqli_fetch_assoc($exedsnx);
 			$iddsn 	= $ambil['iddsn'];
 		#end of iddsn -------------------------------------------------------------
 		
@@ -132,10 +132,10 @@
 			$sql	= 'UPDATE '.$sqlU.' WHERE iddtk = '.$_POST['idformTB'];
 
 			// print_r($sql);exit();
-			$exe	= mysql_query($sql);
+			$exe	= mysqli_query($con,$sql);
 
 			$sql2	= 'UPDATE dsn set baru=1 where iduser='.$_SESSION['iduser'];
-			$exe2	= mysql_query($sql2);
+			$exe2	= mysqli_query($con,$sql2);
 			
 			#query update dtk -----------------------------------------------------
 			if($exe){
@@ -144,14 +144,14 @@
 					#eksekusi hapus file (loop) -----------------------------------
 					for($i=0; $i<count($_POST['filedel']); $i++){
 						$sqlf 	= "select file from bukeg where idbukeg = '".$_POST['filedel'][$i]."'";
-						$exef	= mysql_query($sqlf);
-						$resf	= mysql_fetch_assoc($exef);
+						$exef	= mysqli_query($con,$sqlf);
+						$resf	= mysqli_fetch_assoc($exef);
 						$nama	= $resf['file'];
 						$linkf	= $upDir.$nama;
 						
 						unlink($linkf);
 						$sqld 	= "delete from bukeg where file = '$nama'";
-						$exed	= mysql_query($sqld);
+						$exed	= mysqli_query($con,$sqld);
 						if($exed){
 							$data	= array(
 								'success'=>'berhasil_simpan_bukeg_edit_del_only',
@@ -171,7 +171,7 @@
 					#eksekusi hapus file (loop)-------------------------------------
 					for($i=0; $i<count($_POST['fileadd']); $i++){
 						$sql	="insert into bukeg set iddtk='$_POST[idformTB]',file='".$_POST['fileadd'][$i]."'";
-						$exe	= mysql_query($sql);
+						$exe	= mysqli_query($con,$sql);
 						if($exe){
 							$data	= array(
 								'success'=>'berhasil_simpan_bukeg_edit_add_only',
@@ -194,15 +194,15 @@
 					for($i=0; $i<count($_POST['fileadd']); $i++){
 						$sql	="insert into bukeg set iddtk='$_POST[idformTB]',file='".$_POST['fileadd'][$i]."'";
 						//var_dump($sql);exit();
-						$exe1	= mysql_query($sql);
+						$exe1	= mysqli_query($con,$sql);
 					}#end of eksekusi tambah file (loop)----------------------------
 					
 					#eksekusi hapus file (loop) ------------------------------------
 					for($i=0; $i<count($_POST['filedel']); $i++){
 						$sqlf 	= "select file from bukeg where idbukeg = '".$_POST['filedel'][$i]."'";
 						//var_dump($sqlf);exit();
-						$exef	= mysql_query($sqlf);
-						$resf	= mysql_fetch_assoc($exef);
+						$exef	= mysqli_query($con,$sqlf);
+						$resf	= mysqli_fetch_assoc($exef);
 						$nama	= $resf['file'];
 						//var_dump($nama);exit();
 						$linkf	= $upDir.$nama;
@@ -211,7 +211,7 @@
 						unlink($linkf);
 						$sqld 	= "delete from bukeg where file = '$nama'";
 						//var_dump($sqld);exit();
-						$exe2	= mysql_query($sqld);
+						$exe2	= mysqli_query($con,$sqld);
 					}#end of eksekusi hapus file (loop) -----------------------------
 					
 					#pesan eksekusi query adddel-----------
@@ -253,19 +253,19 @@
 			$sql	= 'INSERT into '.$sqlU.', idhistjab	= '.$ambil['idhistjab'];
 			
 			// print_r($sql);exit();
-			$exe	= mysql_query($sql);
-			$iddtk	= mysql_insert_id();
+			$exe	= mysqli_query($con,$sql);
+			$iddtk	= mysqli_insert_id($con);
 
 			#query insert dtk --------------------------------------------------------
 			if($exe){
 				$sql2	= 'UPDATE dsn set baru=1 where iduser='.$_SESSION['iduser'];
-				$exe2	= mysql_query($sql2);
+				$exe2	= mysqli_query($con,$sql2);
 
 				#eksekusi tambah file (loop)------------------------------------------
 				$jum = count($_POST['fileadd']);
 				for($i=0; $i<$jum; $i++){
 					$sql	= "insert into bukeg set iddtk = '$iddtk', file='".$_POST['fileadd'][$i]."'";
-					$exe	= mysql_query($sql);
+					$exe	= mysqli_query($con,$sql);
 					if($exe){
 						$data	= array(
 							'success'=>'berhasil_simpan_bukeg_new',

@@ -56,8 +56,8 @@
 	      ORDER BY 
 					dk.tglinput desc
 			)tbpoinC';
-		$ex = mysql_query($sq);
-		$rs = mysql_fetch_assoc($ex);
+		$ex = mysqli_query($con,$sq);
+		$rs = mysqli_fetch_assoc($ex);
 		$poin = $rs['poinCur'];
 		// print_r($sq);exit();
 		return $poin;
@@ -125,8 +125,8 @@
 					dk.tglinput desc
 			)tbpoinC';
 		// print_r($sq);exit();
-		$ex = mysql_query($sq);
-		$rs = mysql_fetch_assoc($ex);
+		$ex = mysqli_query($con,$sq);
+		$rs = mysqli_fetch_assoc($ex);
 		$poin = $rs['poinCur'];
 		$poin = ($rs['poinCur']=='')?0:$rs['poinCur'] ;
 		// var_dump($poin);exit();

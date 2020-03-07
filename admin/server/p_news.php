@@ -16,11 +16,11 @@
 		case 'ambiledit':
 			$sql	= 'SELECT* from news where idnews = '.$_GET['idnews'];
 			//var_dump($sql);exit();
-			$exe	= mysql_query($sql);
-			$res	= mysql_fetch_assoc($exe);
+			$exe	= mysqli_query($con,$sql);
+			$res	= mysqli_fetch_assoc($exe);
 			//var_dump($jum);exit();
 			if($exe){
-				$res2 = mysql_fetch_assoc($exe);
+				$res2 = mysqli_fetch_assoc($exe);
 				echo '{
 						"tittle":"'.$res['tittle'].'",
 						"kategori":"'.$res['kategori'].'",
@@ -35,8 +35,8 @@
 		#hapus ==============================================================================================
 		case 'hapus':
 			$sqlz	= "select * from news where idnews='$_GET[idnews]'";
-			$exez	= mysql_query($sqlz);
-			$resz	= mysql_fetch_assoc($exez);
+			$exez	= mysqli_query($con,$sqlz);
+			$resz	= mysqli_fetch_assoc($exez);
 
 			if($exez){
 				$linkx = '../../upload/down/'.$resz['file'];
@@ -44,7 +44,7 @@
 				
 				if(unlink($linkx)){
 					$sql1 	= "delete from news where idnews ='$_GET[idnews]'";
-					$exe1	= mysql_query($sql1);
+					$exe1	= mysqli_query($con,$sql1);
 					if($exe1){
 						echo '{"status":"sukses"}';
 					}else{
@@ -88,9 +88,9 @@
 					}
 						
 					//var_dump($sql);exit();
-					$exe	= mysql_query($sql);
+					$exe	= mysqli_query($con,$sql);
 					$datax	= array();
-					while($res=mysql_fetch_assoc($exe)){
+					while($res=mysqli_fetch_assoc($exe)){
 						$datax[]=$res;
 					}
 					
@@ -105,9 +105,9 @@
 					$sql	= "select * from  kegiatan  where idkeg = '$_GET[idkeg]'";
 					//var_dump($sql);exit();
 					
-					$exe	= mysql_query($sql);
+					$exe	= mysqli_query($con,$sql);
 					$datax	= array();
-					while($res=mysql_fetch_assoc($exe)){
+					while($res=mysqli_fetch_assoc($exe)){
 						$datax[]=$res;
 					}
 					
@@ -140,11 +140,11 @@
 			#end of paging	 
 			
 			#ada data
-			if(mysql_num_rows($result)!=0)
+			if(mysqli_num_rows($result)!=0)
 			{
 				$nox 	= $starting+1;
 				//$tb	='<thead></thead><tbody>';
-				while($res = mysql_fetch_array($result)){	
+				while($res = mysqli_fetch_array($result)){	
 					$btn ="<td>
 								<a class='btn' href=\"javascript:hapusNews('$res[idnews]','$res[kategori]');\" 
 								 role='button'><i class='icon-remove'></i></a>
